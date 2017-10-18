@@ -20,6 +20,7 @@ public class SocketChannelTest {
         socketChannel.configureBlocking(false);
 
         Selector selector = Selector.open();
+        // 注册socket channel的connect事件
         SelectionKey key = socketChannel.register(selector, SelectionKey.OP_CONNECT);
 
         // 异步模式下，connect会直接返回，稍候当isConnectable后，要调用socketChannel.finishConnect来结束连接操作。
@@ -40,9 +41,11 @@ public class SocketChannelTest {
                     System.out.println("isConnectable ");
 
                     socketChannel = (SocketChannel) key1.channel();
+                    // 结束连接
                     if (!socketChannel.finishConnect()) {
                         continue;
                     }
+                    // 注册socket channel的write事件
                     socketChannel.register(selector, SelectionKey.OP_WRITE);
                 }
 

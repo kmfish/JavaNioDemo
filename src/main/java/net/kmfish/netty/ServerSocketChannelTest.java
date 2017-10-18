@@ -23,6 +23,7 @@ public class ServerSocketChannelTest {
 
         Selector selector = Selector.open();
         serverSocketChannel.socket().bind(new InetSocketAddress(10000));
+        // 注册ServerChannle的accept事件
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
         ByteBuffer buf = ByteBuffer.allocate(48);
@@ -43,6 +44,7 @@ public class ServerSocketChannelTest {
                     System.out.println("isAcceptable");
                     SocketChannel socketChannel = serverSocketChannel.accept();
                     socketChannel.configureBlocking(false);
+                    // 注册client channel的read事件
                     socketChannel.register(selector, SelectionKey.OP_READ);
                 }
 
